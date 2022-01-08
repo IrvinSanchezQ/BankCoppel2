@@ -51,6 +51,9 @@ app.get('/InicioDeSesion', (req, res) => {
 app.get('/transaccion2', (req, res) => {
     res.render("transaccion")
 })
+app.get('/pruebas', (req, res) => {
+    res.render("ejemplo")
+})
 // app.use((req, res, next) => {
 //     res.status(404).send('Error 404 Pagina no encontrada :(')
 // })
@@ -64,7 +67,7 @@ app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({extended: true}));
 
 //contenido estatico mostrado y solicitado por node
-//app.use(express.static(path.join(__dirname + 'public')));
+app.use(express.static("views/public/img"));
 
 // $("#AddUser").submit(function (event) {
 //     alert("los datos fueron registrados con exito")
