@@ -12,6 +12,35 @@ const Resgistro = require("./models/ClientModel");
 const { body, validationResult } = require("express-validator");
 const { functions } = require("underscore");
 const res = require("express/lib/response");
+//conexion directa
+const MongoClient = require("mongodb").MongoClient;
+var ObjectId = require("mongodb").ObjectId;
+const BanCoppelDB = "coppeldb";
+
+async function main() {
+    const url2 = "mongodb+srv://ADMIN:ADMIN123EIF@cluster0.8iasn.mongodb.net/BanCoppelDB?retryWrites=true&w=majority";
+    const client = new MongoClient(url2, {
+        useUnifiedTopology: true,
+        useNewUrlParser: true,
+      });
+	try {
+        await client.connect();
+        await listDatabases(client);
+        async function listDatabases(client){
+            databasesList = await client.db().admin().listDatabases();        
+            console.log("Databases:");
+            databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+            };
+
+
+    } catch (e) {
+        console.error(e);
+   
+    }finally {
+        await client.close();
+    }
+}
+main().catch(console.error);
 
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;
@@ -30,9 +59,9 @@ connectDB();
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
-app.get("/", (req, res) => {
-  res.render("inicio");
-});
+// app.get("/", (req, res) => {
+//   res.render("inicio");
+// });
 
 app.get("/registro", (req, res) => {
   res.render("registroUsuario");
@@ -43,7 +72,7 @@ app.get("/EstadosDeCuenta", (req, res) => {
 app.get("/inicio", (req, res) => {
   res.render("index");
 });
-app.get("/InicioDeSesion", (req, res) => {
+app.get("/", (req, res) => {
   res.render("iniciosesion");
 });
 app.get("/transaccion2", (req, res) => {
