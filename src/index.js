@@ -69,13 +69,13 @@ app.get("/registro", (req, res) => {
   res.render("registroUsuario");
 });
 app.get("/EstadosDeCuenta", (req, res) => {
-  res.render("estadodecuenta");
+  res.render("estadoDeCuenta");
 });
 app.get("/inicio", (req, res) => {
   res.render("index");
 });
 app.get("/", (req, res) => {
-  res.render("iniciosesion");
+  res.render("inicioSesion");
 });
 app.get("/transaccion2", (req, res) => {
   res.render("transaccion");
