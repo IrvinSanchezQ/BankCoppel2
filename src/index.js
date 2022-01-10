@@ -13,34 +13,36 @@ const { body, validationResult } = require("express-validator");
 const { functions } = require("underscore");
 const res = require("express/lib/response");
 //conexion directa
-const MongoClient = require("mongodb").MongoClient;
-var ObjectId = require("mongodb").ObjectId;
-const BanCoppelDB = "coppeldb";
+// const MongoClient = require("mongodb").MongoClient;
+// var ObjectId = require("mongodb").ObjectId;
+// const BanCoppelDB = "coppeldb";
 
-async function main() {
-    const url2 = "mongodb+srv://ADMIN:ADMIN123EIF@cluster0.8iasn.mongodb.net/BanCoppelDB?retryWrites=true&w=majority";
-    const client = new MongoClient(url2, {
-        useUnifiedTopology: true,
-        useNewUrlParser: true,
-      });
-	try {
-        await client.connect();
-        await listDatabases(client);
-        async function listDatabases(client){
-            databasesList = await client.db().admin().listDatabases();        
-            console.log("Databases:");
-            databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-            };
+// async function main() {
+//     const url2 = "mongodb+srv://ADMIN:ADMIN123EIF@cluster0.8iasn.mongodb.net/BanCoppelDB?retryWrites=true&w=majority";
+//     const client = new MongoClient(url2, {
+//         useUnifiedTopology: true,
+//         useNewUrlParser: true,
+//       });
+// 	try {
+//         await client.connect();
+//         await listDatabases(client);
+//         async function listDatabases(client){
+//             databasesList = await client.db().admin().listDatabases();        
+//             console.log("Databases:");
+//             databasesList.databases.forEach(db => console.log(` - ${db.name}`));
+            
+//             g
+//         };
 
 
-    } catch (e) {
-        console.error(e);
+//     } catch (e) {
+//         console.error(e);
    
-    }finally {
-        await client.close();
-    }
-}
-main().catch(console.error);
+//     }finally {
+//         await client.close();
+//     }
+// }
+// main().catch(console.error);
 
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;
