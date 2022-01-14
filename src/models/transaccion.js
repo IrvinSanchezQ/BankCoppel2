@@ -41,13 +41,13 @@ const mongoose = require('mongoose');
 //const Schema = mongoose.Schema;
 
 const  transaccionSchema = new mongoose.Schema ({
-    IdTarjetaOrigen: String,
-    IdTarjetaDestino: String,
-    Cvv: String,
-    TipoTransaccion: String, 
-    Motivo: String,
-    Monto: String,
-    Fecha: String,
+    IdTarjetaOrigen: {type: String, required: true},
+    IdTarjetaDestino: {type: String, required: true},
+    Cvv: {type: String, required: true},
+    TipoTransaccion:{type: String, required: true}, 
+    Motivo: {type: String, required: true}, 
+    Monto: {type: String, required: true},
+    Fecha: {type: String, required: true},
     EstadoTrans: String
 });
 module.exports = mongoose.model('transaccion', transaccionSchema);

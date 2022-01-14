@@ -64,13 +64,17 @@
   <!-- <% } )%>
 <% } %> -->
 
+<% if (arrayCuenta.length > 0) { %>
+  <% arrayCuenta.forEach(clientdbs => { %>
   <div class="box">
     <h5>Cuentas de efectivo</h5>
     <div class="shadow-lg p-3 mb-5 bg-body rounded" style="background-color: rgb(240, 236, 236);" id="cuentas">
-      <img src="img/tarjeta.jpg" id="imagenCuenta">
-      <p>Numero de cuenta:<%= IdTarjetaOrigen %>     Saldo:   <%= Monto %></p> <p>CCV:    <%= Ccv %></p>
+      <img src="img/usuario.png" id="imagenCuenta">
+      <p>Titular de cuenta:     <%= clientdbs.Nombre %>  <%= clientdbs.APaterno %>   <br> Direccion:   <%= clientdbs.Direccion %> <br>   ciudad:    <%= clientdbs.ciudad %></p>
     </div>
   </div>
+  <%})%>
+  <%}%>  
 
 </div>
 

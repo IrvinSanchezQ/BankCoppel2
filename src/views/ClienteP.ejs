@@ -24,6 +24,7 @@
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BanCoppel</h5>
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <!-- barra de opciones-->
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
@@ -50,56 +51,35 @@
   <p></p> 
 </div>
 
-<div class="container w-5000 pl-5" id="cuadro1">
-  <h2 class="text-center">Nueva Transaccion</h2>
-<form action="/TransaccionNueva" method="post">
-  <div class="row g-3">
-      <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Cuenta origen</label>
-      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="IdTarjetaOrigen" placeholder="557910025152xxxx">
-  </div>
-      <div class="col">
-          <label for="exampleInputEmail1" class="form-label">Cuenta destino</label>
-          <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="IdTarjetaDestino" placeholder="557910025152xxxx">
-  
-  </div>
-</div>
-<div class="row g-3">
-  <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Cvv</label>
-      <input type="number" max="999" min="100" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Cvv" placeholder="123">
-    </div>
-    <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Tipo de transaccion</label>
-      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="TipoTransaccion" placeholder="3">
-    </div>
-</div>
-<div class="row g-3">
-  <div class="col">
-      <label for="exampleInputEmail1" class="form-label" >Fecha de expiracion</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Fecha" placeholder="11/26">
-    </div>
-    <div class="col">
-      <label for="exampleInputEmail1" class="form-label">Monto</label>
-      <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Monto" placeholder="3000"> 
-    </div>
-</div>
-    
-    <div class="mb-3">
-      <label for="exampleInputEmail1" class="form-label">Motivo</label>
-      <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="Motivo"placeholder="Miguel tienda">
-      
-    </div>
-    <div class="row g-3">
-      <button type="submit" class="btn btn-primary">Enviar </button>
-    </div>
-  
-  <!-- <a href="registroUsuario.html" class="btn btn-primary">Registrarme</a> -->
-</form>
+<div class="container" id="cuentaBanco">
+<!-- <% if (typeof cuentas != 'undefined') { %>
+  <%  cuentas.forEach((cuenta)=> { %> -->
+    <!-- <div class="box">
+      <h5>Cuentas de efectivo</h5>
+      <div class="shadow-lg p-3 mb-5 bg-body rounded" style="background-color: rgb(240, 236, 236);" id="cuentas">
+        <img src="img/tarjeta.jpg" id="imagenCuenta">
+        <p>Numero de cuenta : <%= IdTarjetaOrigen %></p> <p1>Saldo : <%= Monto %></p1> <p>Ccv: <%= Ccv %></p>
+      </div>
+    </div> -->
+  <!-- <% } )%>
+<% } %> -->
 
-</div>  
+<% if (arrayCliente.length > 0) { %>
+  <% arrayCliente.forEach(ClientePruebaDBs => { %>
+  <div class="box">
+    <h5>Cuentas de efectivo</h5>
+    <div class="shadow-lg p-3 mb-5 bg-body rounded" style="background-color: rgb(240, 236, 236);" id="cuentas">
+      <img src="img/tarjeta.jpg" id="imagenCuenta">
+      <p>Titular de cuenta:     <%= ClientePruebaDBs.Nombre %> <br> Direccion:   <%= ClientePruebaDBs.Direccion %> <br>   ciudad:    <%= ClientePruebaDBs.ciudad %></p>
+    </div>
+  </div>
+  <%})%>
+  <%}%>  
+
+</div>
+
     
-<footer class="bg-dark text-white pt-2 pb-3" id="footer">
+<footer class="bg-dark text-white pt-2 pb-3">
   <div class="container text-center text-md-left">
     <div class="row text-center text-md-left">
       <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">

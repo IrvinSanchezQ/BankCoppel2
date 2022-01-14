@@ -10,7 +10,9 @@ const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const Resgistro = require("./models/ClientModel");
 const consultadb = require("./models/CuentaModel");
-const transaccdb = require("./models/transaccion")
+const transaccdb = require("./models/transaccion");
+const Clientdb = require("./models/ClientModel");
+const ClientePruebaDB = require("./models/ClientePrueba");
 const { body, validationResult } = require("express-validator");
 const { functions, object } = require("underscore");
 const res = require("express/lib/response");
@@ -50,7 +52,6 @@ const res = require("express/lib/response");
  const uri = 'mongodb+srv://ADMIN:ADMIN123EIF@cluster0.8iasn.mongodb.net/BanCoppelDB?retryWrites=true&w=majority';
 
 // const Nombre = process.argv[2] || '';
-
 // mongodb.connect(uri, (err, con) => {
 //     // si hay error finalizar
 //     if(err){
@@ -75,25 +76,33 @@ const res = require("express/lib/response");
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;
 
-// mongoose.Promise = global.Promise;
-// mongoose.connect('mongodb://localhost/3000', {
-//     useMongoClient: true
-// })  .then(db => console.log('db is connected'))
-//     .catch(err => console.log(err));
-
 //mongodb connection
 connectDB();
 //Settings
 
-//render de ejs
+//render de arch staticos
 app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
-// app.get("/", (req, res) => {
-//   res.render("inicioSesion");
-// });
+//render de ejs
+app.get("/", (req, res) => {
+  res.render("inicioSesion");
+});
+
+app.get("/cuentas",async (req, res) => {
+  try{
+    const arrayCuentas = await Clientdb.find()
+    console.log(arrayCuentas)
+    res.render("index",{
+      arrayCuenta: arrayCuentas
+   });
+   }catch{
+     console.log(error)
+   }
+});
 
 app.get("/registro", (req, res) => {
+
   res.render("registroUsuario");
 });
 app.get("/EstadosDeCuenta", async(req, res) => {
@@ -108,10 +117,26 @@ app.get("/EstadosDeCuenta", async(req, res) => {
   }
 
 });
-app.get("/inicio", (req, res) => {
-res.render("estadoDeCuenta");
+app.get('/transaccion',async (req, res) => {
+
+  res.render("ejemplo");
 });
-  // mongodb.connect(uri, (err, con) => {
+app.get("/Clientes", async(req, res) => {
+  try{
+    const arrayClientes = await ClientePruebaDB.find()
+    console.log(arrayClientes)
+    res.render("ClienteP",{
+      arrayCliente: arrayClientes
+   });
+   }catch{
+     console.log(error)
+   }
+  });
+app.get("/inicio", (req, res) => {
+// res.render("estadoDeCuenta");
+});
+  //app.get("/inicio", (req, res) => {
+    //mongodb.connect(uri, (err, con) => {
   //   // si hay error finalizar
   //   if(err){
   //       console.log(`No se puede conectar al servidor de mongo ${uri}`);
@@ -141,26 +166,20 @@ res.render("estadoDeCuenta");
 // // const ejemplo =   {Monto:"300", Ccv:"123",IdTarjetaOrigen:"1222222" };
 // // res.render("index",{Monto:ejemplo.Monto, Ccv:ejemplo.Ccv,IdTarjetaOrigen:ejemplo.IdTarjetaOrigen})
 // });
-app.get("/", (req, res) => {
-  res.render("inicioSesion");
-});
-app.get("/transaccion2", (req, res) => {
-    // const id = req.params.id
-  // try{
-  //   const consulta = await consultadb.findOne({_id: id})   
-  // } catch (error) {
-  //   console.log(error)
-  // }
 
-  res.render("transaccion");
-});
-app.get('/pruebas',async (req, res) => {
-
-   res.render("ejemplo");
-});
+// app.get("/transaccion2", (req, res) => {
+//     // const id = req.params.id
+//   // try{
+//   //   const consulta = await consultadb.findOne({_id: id})   
+//   // } catch (error) {
+//   //   console.log(error)
+//   // }
+//   res.render("transaccion");
+// });
 // app.use((req, res, next) => {
 //     res.status(404).send('Error 404 Pagina no encontrada :(')
 // })
+//});
 
 //middlewares
 app.use(bodyParser.json()); 
@@ -174,7 +193,6 @@ app.use(express.static(__dirname + '/public'));
 
 // $("#AddUser").submit(function (event) {
 //     alert("los datos fueron registrados con exito")
-
 // });
 // app.send.submit(function (evente) {
 //     alert("los datos fueron registrados con exito")
@@ -192,12 +210,17 @@ app.use(express.static(__dirname + '/public'));
 //         }
 //     });
 // });
+
 app.post('/TransaccionNueva', async(req,res) => {
   const body = req.body
   try{
     const transacccionincoming= new transaccdb(body)
     await transacccionincoming.save()
     console.log(transacccionincoming)
+    // res.render("estadoDeCuenta");
+    res.render("ejemplo");
+
+
   }catch(error){
     console.log(error);
   }
@@ -257,7 +280,7 @@ app.post(
         "Sinaloa",
         "Jalisco",
         "Quintana roo",
-        "Chihuhua",
+        "Chihuahua",
         "Monterrey"
       )
       .exists()
@@ -268,19 +291,7 @@ app.post(
       .isLength({ min: 5 }),
   ],
   (req, res) => {
-    const {
-      Nombre,
-      APaterno,
-      AMaterno,
-      Email,
-      password,
-      IdCliente,
-      Direccion,
-      Telefono,
-      ciudad,
-      Estado,
-      CodigoPostal,
-    } = req.body;
+    const {Nombre,APaterno,AMaterno,Email,password,IdCliente,Direccion,Telefono,ciudad,Estado,CodigoPostal,  } = req.body;
     const registro = new Resgistro({
       Nombre,
       APaterno,
@@ -318,9 +329,6 @@ app.post(
   }
 );
 
-/*aqui estaba bien broder
-app.get('/', (req, res) => {
-});*/
 
 //ROUTES
 //app.use('registroUsuario.html',require('src/public/registroUsuario.html'));
