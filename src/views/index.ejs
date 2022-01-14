@@ -24,6 +24,7 @@
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">BanCoppel</h5>
               <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
+            <!-- barra de opciones-->
             <div class="offcanvas-body">
               <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
@@ -51,12 +52,23 @@
 </div>
 
 <div class="container" id="cuentaBanco">
+<!-- <% if (typeof cuentas != 'undefined') { %>
+  <%  cuentas.forEach((cuenta)=> { %> -->
+    <!-- <div class="box">
+      <h5>Cuentas de efectivo</h5>
+      <div class="shadow-lg p-3 mb-5 bg-body rounded" style="background-color: rgb(240, 236, 236);" id="cuentas">
+        <img src="img/tarjeta.jpg" id="imagenCuenta">
+        <p>Numero de cuenta : <%= IdTarjetaOrigen %></p> <p1>Saldo : <%= Monto %></p1> <p>Ccv: <%= Ccv %></p>
+      </div>
+    </div> -->
+  <!-- <% } )%>
+<% } %> -->
 
   <div class="box">
     <h5>Cuentas de efectivo</h5>
     <div class="shadow-lg p-3 mb-5 bg-body rounded" style="background-color: rgb(240, 236, 236);" id="cuentas">
       <img src="img/tarjeta.jpg" id="imagenCuenta">
-      <p>Numero de cuenta:</p> <p1>Saldo:</p1> <p>CCV:</p>
+      <p>Numero de cuenta:<%= IdTarjetaOrigen %>     Saldo:   <%= Monto %></p> <p>CCV:    <%= Ccv %></p>
     </div>
   </div>
 

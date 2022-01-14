@@ -9,8 +9,10 @@ const app = express();
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 const Resgistro = require("./models/ClientModel");
+const consultadb = require("./models/CuentaModel");
+const transaccdb = require("./models/transaccion")
 const { body, validationResult } = require("express-validator");
-const { functions } = require("underscore");
+const { functions, object } = require("underscore");
 const res = require("express/lib/response");
 //conexion directa
 // const MongoClient = require("mongodb").MongoClient;
@@ -30,7 +32,6 @@ const res = require("express/lib/response");
 //             databasesList = await client.db().admin().listDatabases();        
 //             console.log("Databases:");
 //             databasesList.databases.forEach(db => console.log(` - ${db.name}`));
-            
 //             g
 //         };
 
@@ -43,6 +44,33 @@ const res = require("express/lib/response");
 //     }
 // }
 // main().catch(console.error);
+
+//ejemple de conexion directa
+ const mongodb = require('mongodb').MongoClient;
+ const uri = 'mongodb+srv://ADMIN:ADMIN123EIF@cluster0.8iasn.mongodb.net/BanCoppelDB?retryWrites=true&w=majority';
+
+// const Nombre = process.argv[2] || '';
+
+// mongodb.connect(uri, (err, con) => {
+//     // si hay error finalizar
+//     if(err){
+//         console.log(`No se puede conectar al servidor de mongo ${uri}`);
+//         process.exit(1);
+//     }
+//     // si no hay error consultar los estudiantes con el id prorpocionado
+//     con.db('BanCoppelDB').collection('transaccions')
+//         .find({IdTarjetaOrigen:"5579100251520005"}).toArray((err, docs) => {
+//             // si hay error entonces finalizar
+//             if(err){
+//                 console.log(`Error al momento de realizar la consulta`);
+//                 process.exit(1);
+//             }
+//             // mostrar los registros
+//             console.log(docs);
+// //            process.exit(0);
+//         })
+// });
+
 
 dotenv.config({ path: "config.env" });
 const PORT = process.env.PORT || 8080;
@@ -62,37 +90,84 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/views");
 
 // app.get("/", (req, res) => {
-//   res.render("inicio");
+//   res.render("inicioSesion");
 // });
 
 app.get("/registro", (req, res) => {
   res.render("registroUsuario");
 });
-app.get("/EstadosDeCuenta", (req, res) => {
-  res.render("estadoDeCuenta");
+app.get("/EstadosDeCuenta", async(req, res) => {
+ try{
+   const arrayTransacciones = await transaccdb.find()
+   console.log(arrayTransacciones)
+   res.render("estadoDeCuenta",{
+    arrayTransaccion: arrayTransacciones
+  });
+  }catch{
+    console.log(error)
+  }
+
 });
 app.get("/inicio", (req, res) => {
-  res.render("index");
+res.render("estadoDeCuenta");
 });
+  // mongodb.connect(uri, (err, con) => {
+  //   // si hay error finalizar
+  //   if(err){
+  //       console.log(`No se puede conectar al servidor de mongo ${uri}`);
+  //       process.exit(1);
+  //   }
+  //   // si no hay error consultar los estudiantes con el id prorpocionado
+  //   con.db('BanCoppelDB').collection('transaccions')
+  //       .find({IdTarjetaOrigen:"5579100251520005"}).toArray((err, docs) => {
+  //           // si hay error entonces finalizar
+  //           if(err){
+  //               console.log(`Error al momento de realizar la consulta`);
+  //               process.exit(1);
+  //           }
+  //           // mostrar los registros
+  //           console.log(docs);
+  //           const ejemplo = con;
+
+//  var str = docs;
+//  typeof str;
+//  console.log(typeof str);
+          //  res.render("index",{Monto:ejemplo.Monto, Ccv:ejemplo.Cvv,IdTarjetaOrigen:con.IdTarjetaOrigen})
+
+//            process.exit(0);
+//        })
+// });
+//   //res.render("index",{cuenta}); {Monto:"300", Ccv:"123",IdTarjetaOrigen:"1222222" }
+// // const ejemplo =   {Monto:"300", Ccv:"123",IdTarjetaOrigen:"1222222" };
+// // res.render("index",{Monto:ejemplo.Monto, Ccv:ejemplo.Ccv,IdTarjetaOrigen:ejemplo.IdTarjetaOrigen})
+// });
 app.get("/", (req, res) => {
   res.render("inicioSesion");
 });
 app.get("/transaccion2", (req, res) => {
+    // const id = req.params.id
+  // try{
+  //   const consulta = await consultadb.findOne({_id: id})   
+  // } catch (error) {
+  //   console.log(error)
+  // }
+
   res.render("transaccion");
 });
-app.get("/pruebas", (req, res) => {
-  res.render("ejemplo");
+app.get('/pruebas',async (req, res) => {
+
+   res.render("ejemplo");
 });
 // app.use((req, res, next) => {
 //     res.status(404).send('Error 404 Pagina no encontrada :(')
 // })
 
 //middlewares
-app.use(bodyParser.json());
+app.use(bodyParser.json()); 
 app.use(express.json());
 app.use(morgan("dev"));
 //app.use(express.urlencoded({extended: true}));
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
 
 //contenido estatico mostrado y solicitado por node
 app.use(express.static(__dirname + '/public'));
@@ -117,6 +192,16 @@ app.use(express.static(__dirname + '/public'));
 //         }
 //     });
 // });
+app.post('/TransaccionNueva', async(req,res) => {
+  const body = req.body
+  try{
+    const transacccionincoming= new transaccdb(body)
+    await transacccionincoming.save()
+    console.log(transacccionincoming)
+  }catch(error){
+    console.log(error);
+  }
+})
 
 app.post("/iniciosesion", (req, res) => {
   const { IdCuenta, password } = req.body;

@@ -55,30 +55,33 @@
     <table class="table">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col"># de la transaccion</th>
+            <th scope="col">tarjeta origen</th>
+            <th scope="col">tarjeta destino</th>
+            <th scope="col">cvv</th>
+            <th scope="col">tipo de transaccion</th>
+            <th scope="col">motivo</th>
+            <th scope="col">monto</th>
+            <th scope="col">fecha de caducidad</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td colspan="2">Larry the Bird</td>
-            <td>@twitter</td>
-          </tr>
+          <% if (arrayTransaccion.length > 0) { %>
+            <% arrayTransaccion.forEach(transaccdb => { %>
+              <tr>
+                <th scope="row"><%= transaccdb._id %></th>
+                <td><%= transaccdb.IdTarjetaOrigen %></td>
+                <td><%= transaccdb.IdTarjetaDestino %></td>
+                <td><%= transaccdb.Cvv %></td>
+                <td><%= transaccdb.TipoTransaccion %></td>
+                <td><%= transaccdb.Motivo %></td>
+                <td><%= transaccdb.Monto %></td>
+                <td><%= transaccdb.Fecha %></td>
+              </tr>
+            <%})%>
+          <%}%>  
+
+          
         </tbody>
       </table>
 </div>
